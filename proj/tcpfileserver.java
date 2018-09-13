@@ -7,7 +7,18 @@ class tcpfileserver {
 	public static void main(String args[]) {
 		try {
 			ServerSocketChannel c = ServerSocketChannel.open();
-			c.bind(new InetSocketAddress(9877)); // not specifying address... just implying
+			Console cons = System.console();
+			boolean isint = false;
+			int p = 0;
+			while(!isint) {
+				String m = cons.readLine("Give a port number: ");
+				if (m.matches("^-?\\d+$")) { 
+					p = Integer.parseInt(m);
+					isint = true;
+				} else System.out.println("Not a number.");
+			}
+			c.bind(new InetSocketAddress(p)); // not specifying address... just implying
+			System.out.println("Listening on port* " + p);
 			// infinite loop
 			while (true) {
 				SocketChannel sc = c.accept();

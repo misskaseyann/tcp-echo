@@ -7,10 +7,28 @@ class tcpfileclient {
 	public static void main(String args[]) {
 		try {
 			SocketChannel sc = SocketChannel.open();
-			sc.connect(new InetSocketAddress("127.0.0.1", 9877));
 			Console cons = System.console();
-			
-			String m = cons.readLine("Enter your message: ");
+
+			boolean isint = false;
+			int p = 0;
+			String a = "127.0.0.1";
+			String m = cons.readLine("Give an address: ");
+			if (m.matches("(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)")) a = m;
+			else System.out.println("Not an address. Using default.");
+
+			System.out.println(a);
+
+			while(!isint) {
+				m = cons.readLine("Give a port number: ");
+				if (m.matches("^-?\\d+$")) { 
+					p = Integer.parseInt(m);
+					isint = true;
+				} else System.out.println("Not a number.");
+			}
+
+			sc.connect(new InetSocketAddress(a, p));
+
+			m = cons.readLine("Enter your message: ");
 			String type = "";
 			String[] arr = m.split("\\.");
 			if (arr.length > 0) {
